@@ -22,4 +22,4 @@ to add your new angular front-end project
 - Run your application on a `localhost:8080` to check out.
 ### Server-side:
 In order to be able to update your SpringBoot project, we have to improt it.
-In eclipse: Open File>Import>Existing Maven Project> Browse to your project folder, select it.
+In eclipse: Open `File>Import>Existing Maven Project` Browse to your project folder, select it.
