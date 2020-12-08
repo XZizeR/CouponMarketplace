@@ -22,7 +22,7 @@ To access as admin you have to input the following fields accordingly:
 
 
 ## How to improve it
-- Dockerize the application.
+- Dockerize the application with a separately running MySQL container.
 - Improve the security of session token UUID with JWT signatures.
 
 
