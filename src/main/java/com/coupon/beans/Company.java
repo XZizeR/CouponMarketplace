@@ -25,13 +25,13 @@ import lombok.NoArgsConstructor;
 @Scope("prototype")
 @Entity
 @Table(name = "Companies", uniqueConstraints = { @UniqueConstraint(columnNames = "email", name = "uniqueConstraint") })
-@NoArgsConstructor // constructor - for hibernate
-@AllArgsConstructor // constructor - to show
+@NoArgsConstructor // for hibernate
+@AllArgsConstructor
 @Data // getters + setters + to-string
 public class Company {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // this will be an identity column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Company_ID")
 	private long companyID;
 
@@ -50,7 +50,7 @@ public class Company {
 	@OneToMany(mappedBy = "companyID", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Coupon> coupons;
 
-	// to create
+//	TO CREATE
 	public Company(@NotBlank(message = "Name may not be blank") String name,
 			@NotBlank(message = "Name may not be blank") String email,
 			@NotBlank(message = "Name may not be blank") String password) {
@@ -60,7 +60,7 @@ public class Company {
 		this.password = password;
 	}
 
-	// to update
+//	TO UPDATE
 	public Company(long companyID, @NotBlank(message = "Name may not be blank") String name,
 			@NotBlank(message = "Name may not be blank") String email,
 			@NotBlank(message = "Name may not be blank") String password) {
@@ -71,16 +71,14 @@ public class Company {
 		this.password = password;
 	}
 
-	// establishes the foreign key
+//	ENABLES FOREIGN-KEY
 	public void addCoupon(Coupon coupon) {
 		this.coupons.add(coupon);
 	}
 
-	// disables the foreign key
+//	DESABLES FOREIGN-KEY
 	public void removeCoupon(Coupon coupon) {
 		this.coupons.remove(coupon);
 	}
-
-
 
 }

@@ -24,9 +24,6 @@ import com.coupon.exception.EmptyFieldException;
 import com.coupon.exception.IdDoesntExistsException;
 import com.coupon.facade.AdminFacade;
 
-// session - the connection
-// token - the current connected device
-
 @RestController
 @RequestMapping("admin")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -35,46 +32,24 @@ public class AdminController {
 	@Autowired
 	Map<String, Session> sessionMap;
 
-	// Checks the session time - works
-	// old - version
-//	private void isTimeOut(String token, Session session) {
-//		long diff = System.currentTimeMillis() - session.getLastAccessed();
-//		long limit = 1000 * 60 * 5; 
-//		if (diff > limit) {
-//			sessionsMap.remove(token);
-//			session = null;
-//		} 
-//	}
-	// Checks the session time - works
+//	SESSION
 	private void isTimeOut(String token, Session session) {
 		long diff = System.currentTimeMillis() - session.getLastAccessed();
-		// q: does the amount of time, adds after constant usage?
-		long limit = 1000 * 60 * 60; // milliseconds * seconds * minutes
+		long limit = 1000 * 60 * 60; // 60 minutes
 		if (diff > limit) {
 			sessionMap.remove(token);
 			session = null;
 		} else
-			session.setLastAccessed(System.currentTimeMillis()); // updates the last session time
-
-		// Tests:
-		System.out.println("AdminController: ");
-		System.out
-				.println(" getLastAccessed: " + session.getLastAccessed() + ", system: " + System.currentTimeMillis());
-		System.out.println("  diff: " + diff + ", limit: " + limit);
-		
+			session.setLastAccessed(System.currentTimeMillis());	
 	}
 
-//	--------------------------------------------------------------------------------------------------
-//	Company side:
-
-	// Add a Company - works
+//	ADD COMPANY
 	@PostMapping("/addCompany/{token}")
 	public ResponseEntity<Object> addCompany(@PathVariable String token, @RequestBody Company company) {
 		Session session = sessionMap.get(token);
 		if (session != null)
 			isTimeOut(token, session);
 		if (session != null) {
-//			session.setLastAccessed(System.currentTimeMillis()); // updates the last session time
 			AdminFacade facade = (AdminFacade) session.getFacade();
 			try {
 				facade.addCompany(company);
@@ -87,7 +62,7 @@ public class AdminController {
 		}
 	}
 
-	// Update a Company - works
+//	UPDATE COMPANY
 	@PutMapping("/updateCompany/{token}")
 	public ResponseEntity<Object> updateCompany(@PathVariable String token, @RequestBody Company company) {
 		Session session = sessionMap.get(token);
@@ -107,7 +82,7 @@ public class AdminController {
 		}
 	}
 
-	// Delete a Company - works
+//	DELETE COUPON
 	@DeleteMapping("/deleteCompany/{token}/{companyID}")
 	public ResponseEntity<Object> deleteCompany(@PathVariable String token, @PathVariable int companyID)
 			throws CompanyDoestExistsException {
@@ -127,7 +102,7 @@ public class AdminController {
 		}
 	}
 
-	// Get all Company - works
+//	FIND-ALL COUPONS
 	@GetMapping("/getAllCompany/{token}")
 	public ResponseEntity<Object> getAllCompany(@PathVariable String token) throws CompanyExistsException {
 		Session session = sessionMap.get(token);
@@ -141,7 +116,7 @@ public class AdminController {
 		}
 	}
 
-	// Get one Company - works
+//	FIND-ONE COUPON
 	@GetMapping("/getOneCompany/{token}/{companyID}")
 	public ResponseEntity<Object> getOneCompany(@PathVariable String token, @PathVariable int companyID)
 			throws CompanyExistsException {
@@ -160,10 +135,7 @@ public class AdminController {
 		}
 	}
 
-//  =================================================================================================
-//	Customer side:
-
-	// Add a Customer - works
+//	ADD CUSTOMER
 	@PostMapping("/addCustomer/{token}")
 	public ResponseEntity<Object> addNewCustomer(@PathVariable String token, @RequestBody Customer customer) {
 		Session session = sessionMap.get(token);
@@ -182,7 +154,7 @@ public class AdminController {
 		}
 	}
 
-	// Update a Customer - works
+//	UPDATE CUSTOMER
 	@PutMapping("/updateCustomer/{token}")
 	public ResponseEntity<Object> updateCustomer(@PathVariable String token, @RequestBody Customer customer) {
 		Session session = sessionMap.get(token);
@@ -201,7 +173,7 @@ public class AdminController {
 		}
 	}
 
-	// Delete a Customer - works
+//	DELETE CUSTOMER
 	@DeleteMapping("/deleteCustomer/{token}/{customerID}")
 	public ResponseEntity<Object> deleteCustomer(@PathVariable String token, @PathVariable int customerID)
 			throws CustomerExistsException {
@@ -221,7 +193,7 @@ public class AdminController {
 		}
 	}
 
-	// Get all Customer - works
+//	FIND-ALL CUSTOMERS
 	@GetMapping("/getAllCustomers/{token}")
 	public ResponseEntity<Object> getAllCustomer(@PathVariable String token) {
 		Session session = sessionMap.get(token);
@@ -235,7 +207,7 @@ public class AdminController {
 		}
 	}
 
-	// Get one Customer - works
+//	FIND-ONE CUSTOMER
 	@GetMapping("/getOneCustomer/{token}/{customerID}")
 	public ResponseEntity<Object> getOneCustomer(@PathVariable String token, @PathVariable int customerID) {
 		Session session = sessionMap.get(token);
@@ -253,6 +225,4 @@ public class AdminController {
 		}
 	}
 	
-	
-
 }

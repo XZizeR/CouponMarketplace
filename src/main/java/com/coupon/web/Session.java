@@ -4,7 +4,7 @@ import com.coupon.facade.ClientFacade;
 
 public class Session {
 	private ClientFacade facade;
-	private long lastAccessed; //last time i accessed
+	private long lastAccessed;
 	
 	public Session(ClientFacade facade, long lastAccessed) {
 		super();

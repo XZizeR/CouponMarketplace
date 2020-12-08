@@ -22,7 +22,7 @@ public class CompanyFacade extends ClientFacade {
 
 	private long companyId;
 
-	// Login into the system as Company and return Id
+//	LOGIN - COMPANY
 	@Override
 	public boolean login(String email, String password) {
 		Company temp = compDB.isCompanyExist(email, password);
@@ -33,82 +33,77 @@ public class CompanyFacade extends ClientFacade {
 		return false;
 	}
 
-	// Add one Coupon
+//	ADD COUPON
 	public void addCoupon(Coupon coupon)
 			throws CouponExistsException, EmptyFieldException, DateException, IncorrectInputException {
-		// check if the number is negative
+//		check - negative number
 		if (coupon.getAmount() < 0 || coupon.getPrice() < 0) {
 			throw new IncorrectInputException();
 		}
-		// check - if the fields empty.
+//		check - empty fields
 		if (coupon.getCategory() == null || coupon.getTitle() == null || coupon.getDescription() == null
 				|| coupon.getImage() == null || coupon.getStartDate() == null || coupon.getEndDate() == null) {
 			throw new EmptyFieldException();
 		}
-		// check - if the object already exist.
+//		check - the title already exist
 		for (Coupon coup : coupDB.getAllCoupons()) {
 			if (coup.getTitle().equals(coupon.getTitle()))
 				throw new CouponExistsException();
 		}
-		// check - date.
+//		check - the date
 		if (coupon.getStartDate().getTime() > coupon.getEndDate().getTime()) {
 			throw new DateException();
 		}
 
-		// the creation
 		coupDB.addCoupon(coupon);
 	}
 
-	// Update one Coupon
+//	UPDATE COUPON
 	public void updateCoupon(Coupon coupon) throws EmptyFieldException, IdDoesntExistsException, CouponExistsException,
 			DateException, IncorrectInputException {
-		// check if the number is negative
+//		check - negative number
 		if (coupon.getCouponID() < 0 || coupon.getAmount() < 0 || coupon.getPrice() < 0) {
 			throw new IncorrectInputException();
 		}
-		// check - if the fields empty.
+//		check - empty fields
 		if (coupon.getCategory() == null || coupon.getTitle() == null || coupon.getDescription() == null
 				|| coupon.getImage() == null || coupon.getStartDate() == null || coupon.getEndDate() == null) {
 			throw new EmptyFieldException();
 		}
-		// check - if the object exist
+//		check - the object exist
 		if (coupDB.getOneCoupon(coupon.getCouponID()) == null) {
 			throw new IdDoesntExistsException();
 		}
-		// check - if the object already exist.
+//		check - if the title already exist
 		for (Coupon coup : coupDB.getAllCoupons()) {
 			if (coup.getTitle().equals(coupon.getTitle()))
 				throw new CouponExistsException();
 		}
-		// check - date.
+//		check - the date
 		if (coupon.getStartDate().getTime() > coupon.getEndDate().getTime()) {
 			throw new DateException();
 		}
 
-		// the update
 		coupDB.updateCoupon(coupon);
 	}
 
-	// Delete one Coupon
-	// 1. delete the coupon from the customers
-	// 2. delete the coupon from the companies
-	// 3. delete coupon
+//	DELETE COUPON
 	public void deleteCoupon(int couponID) throws IdDoesntExistsException, IncorrectInputException {
-		// check if the number is negative
+//		check - negative number
 		if (couponID < 0) {
 			throw new IncorrectInputException();
 		}
-		// check - if the object exist
+//		check - the object exist
 		if (coupDB.getOneCoupon(couponID) == null) {
 			throw new IdDoesntExistsException();
 		}
 
-		// disconnect it from the company
+//		delete from the company
 		Coupon couponToDelete = coupDB.getOneCoupon(couponID);
 		Company comp = couponToDelete.getCompanyID();
 		comp.removeCoupon(couponToDelete);
 		compDB.updateCompany(comp);
-		// disconnect it from the customer
+//		delete from the customer
 		List<Customer> customers = custDB.getAllCustomers();
 		for (Customer customer : customers) {
 			if (customer.getCoupons().contains(couponToDelete)) {
@@ -116,32 +111,10 @@ public class CompanyFacade extends ClientFacade {
 				custDB.updateCustomer(customer);
 			}
 		}
-
-		// delete the coupon
 		coupDB.deleteCoupon(couponID);
-
-//		List<Customer> customers = custDB.getAllCustomers();
-//		for (Customer cust : customers) {
-//			List<Coupon> coupons = cust.getCoupons();
-//			for (Coupon coup : coupons) {
-//				if(couponID==coup.getCouponID())
-//					coupons.remove(coup);
-//			}
-//		}
-//		List<Company>companies=compDB.getAllCompanies();
-//		for (Company comp : companies) {
-//			List<Coupon> coupons = coupDB.getAllCoupons();
-//			for (Coupon coup : coupons) {
-//				if(couponID==coup.getCouponID())
-//					coupons.remove(couponID);
-//			}
-//			compDB.updateCompany(comp);
-//		}
-//		
-//		coupDB.deleteCoupon(couponID);
 	}
 
-	// getCompanyCoupons #1 - all coupons of the company
+//	GET COUPONS
 	public List<Coupon> getCompanyCoupons() {
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coup : coupDB.getAllCoupons()) {
@@ -151,9 +124,8 @@ public class CompanyFacade extends ClientFacade {
 		return coupons;
 	}
 
-	// getCompanyCoupons #2 - by category
+//	GET COUPONS - CATEGORY
 	public List<Coupon> getCompanyCoupons(Category category) throws EmptyFieldException {
-		// the search
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coup : coupDB.getAllCoupons()) {
 			if (companyId == coup.getCompanyID().getCompanyID())
@@ -163,14 +135,14 @@ public class CompanyFacade extends ClientFacade {
 		return coupons;
 	}
 
-	// getCompanyCoupons #3 - by max price
+
+//	GET COUPONS - PRICE LIMIT
 	public List<Coupon> getCompanyCoupons(double maxPrice) throws IncorrectInputException {
-		// check if the number is negative
+		// check - negative number
 		if (maxPrice < 0) {
 			throw new IncorrectInputException();
 		}
 
-		// the search
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coup : coupDB.getAllCoupons()) {
 			if (companyId == coup.getCompanyID().getCompanyID())
@@ -180,24 +152,24 @@ public class CompanyFacade extends ClientFacade {
 		return coupons;
 	}
 
-	// getCompanyDetails
+
+//	COMPANY DETAILS
 	public Company getCompanyDetails() {
 		return compDB.getOneCompany(companyId);
 	}
 
-	// getOneCoupon
+//	GET-ONE COUPON
 	public Coupon getOneCoupon(int couponID) throws IdDoesntExistsException, IncorrectInputException {
-		// check if the number is negative
+		// check - negative number
 		if (couponID < 0) {
 			throw new IncorrectInputException();
 		}
-		// check - if the object exist
+		// check - the object exist
 		if (coupDB.getOneCoupon(couponID) == null) {
 			throw new IdDoesntExistsException();
 		}
 
-		// the search
 		return coupDB.getOneCoupon(couponID);
 	}
-
+	
 }

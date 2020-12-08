@@ -34,26 +34,25 @@ public class CompanyController {
 	@Autowired
 	Map<String, Session> sessionMap;
 
-	// Checks the session time
+//	SESSION
 	private void isTimeOut(String token, Session session) throws EndOfSessionException {
 		long diff = System.currentTimeMillis() - session.getLastAccessed();
-		long limit = 1000 * 60 * 60; // milliseconds * seconds * minutes
+		long limit = 1000 * 60 * 60; // 60 minutes
 		if (diff > limit) {
 			sessionMap.remove(token);
 			session = null;
 			throw new EndOfSessionException();
 		} else
-			session.setLastAccessed(System.currentTimeMillis()); // updates the last session time
+			session.setLastAccessed(System.currentTimeMillis());
 
-		// Tests:
-		System.out.println("CompanyController: ");
-		System.out
-				.println(" getLastAccessed: " + session.getLastAccessed() + ", system: " + System.currentTimeMillis());
-		System.out.println("  diff: " + diff + ", limit: " + limit);
-
+//		Tests:
+//		System.out.println("CompanyController: ");
+//		System.out
+//				.println(" getLastAccessed: " + session.getLastAccessed() + ", system: " + System.currentTimeMillis());
+//		System.out.println("  diff: " + diff + ", limit: " + limit);
 	}
 
-	// Add a Coupon - works
+//	ADD COUPON
 	@PostMapping("/addCoupon/{token}")
 	public ResponseEntity<Object> addNewCoupon(@PathVariable String token, @RequestBody Coupon coupon)
 			throws EndOfSessionException {
@@ -74,7 +73,7 @@ public class CompanyController {
 		}
 	}
 
-	// Update a Coupon - works
+//	UPDATE COUPON
 	@PutMapping("/updateCoupon/{token}")
 	public ResponseEntity<Object> updateCoupon(@PathVariable String token, @RequestBody Coupon coupon)
 			throws EndOfSessionException {
@@ -96,7 +95,7 @@ public class CompanyController {
 		}
 	}
 
-	// Delete a Coupon - works
+//	DELETE COUPON
 	@DeleteMapping("/deleteCoupon/{token}/{couponID}")
 	public ResponseEntity<Object> deleteCoupon(@PathVariable String token, @PathVariable int couponID)
 			throws CouponExistsException, EndOfSessionException {
@@ -116,7 +115,7 @@ public class CompanyController {
 		}
 	}
 
-	// Get Company Coupons #1 - works
+//	FIND COUPONS
 	@GetMapping("/getCompanyCoupons/{token}")
 	public ResponseEntity<Object> getCoupons(@PathVariable String token)
 			throws CouponExistsException, EndOfSessionException {
@@ -131,7 +130,7 @@ public class CompanyController {
 		}
 	}
 
-	// Get Company Coupons #2 - work
+//	FIND COUPONS - CATEGORY
 	@GetMapping("/getCompanyCouponsCategory/{token}/{category}")
 	public ResponseEntity<Object> getCoupons(@PathVariable String token, @PathVariable Category category)
 			throws CouponExistsException, EndOfSessionException {
@@ -150,7 +149,7 @@ public class CompanyController {
 		}
 	}
 
-	// Get Company Coupons #3 - work
+//	FIND COUPONS - PRICE LIMIT
 	@GetMapping("/getCompanyCouponsMaxprice/{token}/{maxPrice}")
 	public ResponseEntity<Object> getCoupons(@PathVariable String token, @PathVariable double maxPrice)
 			throws EndOfSessionException {
@@ -169,7 +168,7 @@ public class CompanyController {
 		}
 	}
 
-	// Get a Company Details - works
+//	COMPANY DETAILS
 	@GetMapping("/getCompanyDetails/{token}")
 	public ResponseEntity<Object> getCompanyDetails(@PathVariable String token)
 			throws CouponExistsException, EndOfSessionException {
@@ -184,7 +183,7 @@ public class CompanyController {
 		}
 	}
 
-	// Get one Company - works
+//	FIND-ONE COMPANY
 	@GetMapping("/getOneCoupon/{token}/{companyID}")
 	public ResponseEntity<Object> getOneCompany(@PathVariable String token, @PathVariable int couponID)
 			throws CompanyExistsException, EndOfSessionException {

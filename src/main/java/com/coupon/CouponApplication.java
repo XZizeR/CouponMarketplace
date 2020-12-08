@@ -14,7 +14,5 @@ public class CouponApplication {
 		CouponExpirationDailyJob job = ctx.getBean(CouponExpirationDailyJob.class);
 		Thread t = new Thread(job);
 		t.start();
-
-
 	}
 }

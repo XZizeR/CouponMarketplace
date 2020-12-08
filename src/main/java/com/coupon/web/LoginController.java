@@ -24,9 +24,10 @@ public class LoginController {
 	@Autowired
 	private Map<String, Session> sessionsMap;
 
+//	SIGN-IN
 	@PostMapping("/login/{email}/{password}/{type}")
 	public String login(@PathVariable String email, @PathVariable String password, @PathVariable ClientType type) {
-
+//		token key
 		String token = UUID.randomUUID().toString();
 		try {
 			ClientFacade facade = loginManager.login(email, password, type);
@@ -41,6 +42,7 @@ public class LoginController {
 		}
 	}
 
+//	SIGN-OUT
 	@PostMapping("/logout/{token}")
 	public void logout(@PathVariable String token) {
 		sessionsMap.remove(token);

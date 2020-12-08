@@ -29,25 +29,18 @@ public class CustomerController {
 	@Autowired
 	Map<String, Session> sessionMap;
 
-	// Checks the session time
+//	SESSION
 	private void isTimeOut(String token, Session session) {
 		long diff = System.currentTimeMillis() - session.getLastAccessed();
-		long limit = 1000 * 60 * 60; // milliseconds * seconds * minutes
+		long limit = 1000 * 60 * 60; // 60 minutes
 		if (diff > limit) {
 			sessionMap.remove(token);
 			session = null;
 		} else
-			session.setLastAccessed(System.currentTimeMillis()); // updates the last session time
-
-		// Tests:
-		System.out.println("CompanyController: ");
-		System.out
-				.println(" getLastAccessed: " + session.getLastAccessed() + ", system: " + System.currentTimeMillis());
-		System.out.println("  diff: " + diff + ", limit: " + limit);
-
+			session.setLastAccessed(System.currentTimeMillis());
 	}
 
-	// Add a Coupon to a Customer - works
+//	PURCHASE COUPON
 	@PostMapping("/purchaseCoupon/{token}/{couponID}")
 	public ResponseEntity<Object> purchaseCoupon(@PathVariable String token, @PathVariable int couponID) {
 		Session session = sessionMap.get(token);
@@ -67,7 +60,7 @@ public class CustomerController {
 		}
 	}
 
-	// Get Customer Coupons #1 - works
+//	FIND COUPONS
 	@GetMapping("/getCustomerCoupons/{token}")
 	public ResponseEntity<Object> getCustomerCoupons(@PathVariable String token) {
 		Session session = sessionMap.get(token);
@@ -81,7 +74,7 @@ public class CustomerController {
 		}
 	}
 
-	// Get Customer Coupons #2 - works
+//	FIND COUPONS - CATEGORY
 	@GetMapping("/getCustomerCouponsByCategory/{token}/{category}")
 	public ResponseEntity<Object> getCustomerCoupons(@PathVariable String token, @PathVariable Category category) {
 		Session session = sessionMap.get(token);
@@ -95,7 +88,7 @@ public class CustomerController {
 		}
 	}
 
-	// Get Customer Coupons #3 - works
+//	FIND COUPONS - PRICE LIMIT
 	@GetMapping("/getCustomerCouponsByMaxprice/{token}/{maxPrice}")
 	public ResponseEntity<Object> getCustomerCoupons(@PathVariable String token, @PathVariable int maxPrice) {
 		Session session = sessionMap.get(token);
@@ -113,7 +106,7 @@ public class CustomerController {
 		}
 	}
 
-	// Get Customer Details - works
+//	CUSTOMER DETAILS
 	@GetMapping("/getCustomerDetails/{token}")
 	public ResponseEntity<Object> getCustomerDetails(@PathVariable String token) {
 		Session session = sessionMap.get(token);
@@ -127,7 +120,7 @@ public class CustomerController {
 		}
 	}
 
-	// Get All Coupons - works
+//	FIND-ALL COUPONS
 	@GetMapping("/getAllCoupons/{token}")
 	public ResponseEntity<Object> getAllCoupons(@PathVariable String token) {
 		Session session = sessionMap.get(token);

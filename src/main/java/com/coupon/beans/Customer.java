@@ -24,8 +24,8 @@ import lombok.NoArgsConstructor;
 @Scope("prototype")
 @Entity
 @Table(name = "Customers", uniqueConstraints = { @UniqueConstraint(columnNames = "email", name = "uniqueConstraint") })
-@NoArgsConstructor // constructor - for hibernate
-@AllArgsConstructor // constructor - to show
+@NoArgsConstructor // for hibernate
+@AllArgsConstructor
 @Data // getters + setters + to-string
 public class Customer {
 
@@ -53,7 +53,7 @@ public class Customer {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Coupon> coupons;
 
-	// to create
+//	TO CREATE
 	public Customer(@NotBlank(message = "Name may not be blank") String firstName,
 			@NotBlank(message = "Name may not be blank") String lastName,
 			@NotBlank(message = "Name may not be blank") String email,
@@ -65,7 +65,7 @@ public class Customer {
 		this.password = password;
 	}
 
-	// to update
+//	TO UPDATE
 	public Customer(long customerID, @NotBlank(message = "Name may not be blank") String firstName,
 			@NotBlank(message = "Name may not be blank") String lastName,
 			@NotBlank(message = "Name may not be blank") String email,

@@ -9,6 +9,6 @@ import com.coupon.beans.Customer;
 public interface CustomersRepository extends JpaRepository<Customer, Long>{
 	
 	List<Customer> findCustomerByCustomerID(long customerId);
+	
 	Customer findCustomerByEmailAndPassword(String email, String password);
-
 }

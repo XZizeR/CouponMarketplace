@@ -21,7 +21,7 @@ public class CustomerFacade extends ClientFacade {
 
 	private long customerID;
 
-	// Login into the system as Customer and return Id
+//	LOGIN - CUSTOMER
 	@Override
 	public boolean login(String email, String password) {
 		Customer temp = custDB.isCustomerExist(email, password);
@@ -32,24 +32,20 @@ public class CustomerFacade extends ClientFacade {
 		return false;
 	}
 
-	// Purchase a Coupon // help
+//	PURCHASE COUPON
 	public void purchaseCoupon(int couponID) throws CouponPurchasedException, CouponDateException, CouponStockException,
 			CouponDoesntExistException, IncorrectInputException, IdDoesntExistsException {
-		// check - if the number is negative
+		// check - negative number
 		if (couponID < 0) {
 			throw new IncorrectInputException();
 		}
 
-		// load the logged-in customer
 		Customer customer = custDB.getOneCustomer(customerID);
-		// load the coupon
 		Coupon coupon = coupDB.getOneCoupon(couponID);
-		// load a current date
 		Date today = new Date();
-		// load all the coupons of the logged-in customer
 		List<Coupon> customerCoupons = customer.getCoupons();
 
-		// checks - coupons
+//		checks - coupon exist
 		if (coupon != null) {
 			System.out.println(coupon);
 		} else {
@@ -60,33 +56,32 @@ public class CustomerFacade extends ClientFacade {
 				throw new CouponPurchasedException();
 			}
 		}
+//		check - the amount
 		if (coupon.getAmount() == 0) {
 			throw new CouponStockException();
 		}
+//		check - the date
 		if (coupon.getEndDate().before(today)) {
 			throw new CouponDateException();
 		}
 
-		// add the new coupon to the customer list.
+//		purchase
 		customer.getCoupons().add(coupon);
-		// set the list to the customer.
 		custDB.updateCustomer(customer);
 
-		// reduce the amount by 1.
+//		amount update
 		coupon.setAmount(coupon.getAmount() - 1);
-		// update the coupon data.
 		coupDB.updateCoupon(coupon);
 	}
 
-	// Get Customer Coupons #1 - gives all customer coupons.
+//	GET CUSTOMER COUPONS
 	public List<Coupon> getCustomerCoupons() {
 		List<Coupon> coupons = custDB.getOneCustomer(customerID).getCoupons();
 		return coupons;
 	}
 
-	// Get Customer Coupons #2 - give all customer coupons by category // help
+//	GET CUSTOMER COUPONS - CATEGORY
 	public List<Coupon> getCustomerCoupons(Category category) {
-		// the search
 		List<Coupon> coupons = new ArrayList<Coupon>();
 		for (Coupon coup : custDB.getOneCustomer(customerID).getCoupons()) {
 			if (coup.getCategory().equals(category))
@@ -95,14 +90,13 @@ public class CustomerFacade extends ClientFacade {
 		return coupons;
 	}
 
-	// Get Customer Coupons - give all customer coupons by max price #3
+//	GET CUSTOMER COUPONS - PRICE LIMIT
 	public List<Coupon> getCustomerCoupons(double maxPrice) throws IncorrectInputException {
-		// check if the number is negative
+//		check - negative number
 		if (maxPrice < 0) {
 			throw new IncorrectInputException();
 		}
 
-		// the search
 		List<Coupon> coupons = new ArrayList<Coupon>();
 		for (Coupon coup : custDB.getOneCustomer(customerID).getCoupons()) {
 			if (coup.getPrice() <= maxPrice)
@@ -111,12 +105,12 @@ public class CustomerFacade extends ClientFacade {
 		return coupons;
 	}
 
-	// getCustomerDetails
+//	CUSTOMER DETAILS
 	public Customer getCustomerDetails() {
 		return custDB.getOneCustomer(customerID);
 	}
 
-	// get all Coupons
+//	GET-ALL COUPONS
 	public List<Coupon> getAllCoupons() {
 		List<Coupon> list = new ArrayList<>();
 		List<Coupon> coupons = coupDB.getAllCoupons();

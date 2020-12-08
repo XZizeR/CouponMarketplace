@@ -17,7 +17,7 @@ public class LoginManager {
 	@Autowired
 	private ConfigurableApplicationContext ctx;
 
-	// Login
+//	LOGIN
 	public ClientFacade login(String email, String password, ClientType clientType) throws LoginException, InvalidClientTypeException {
 
 		switch (clientType) {

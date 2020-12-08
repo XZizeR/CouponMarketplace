@@ -15,14 +15,9 @@ import com.coupon.db.CompaniesDBDAO;
 import com.coupon.db.CouponsDBDAO;
 import com.coupon.db.CustomersDBDAO;
 
-/*	
- * deletes multiple outdated coupons.
- */
-
 @Component
 public class CouponExpirationDailyJob implements Runnable {
 
-	// Fields
 	private boolean quit = false;
 	@Autowired
 	protected CompaniesDBDAO compDB;
@@ -31,28 +26,18 @@ public class CouponExpirationDailyJob implements Runnable {
 	@Autowired
 	protected CustomersDBDAO custDB;
 
-	// Run
-	// 1. get all coupons
-	// 2. check the date
-	// 3. if it's expired remove it from the customer list
-	// 4. remove the coupon from the company list
-	// 5. delete the coupon
+//	Scans and deletes expired coupons
 	@Override
 	public void run() {
 		while (!quit) {
 			try {
 			Date today = new Date();
-			// get all coupons
 			List<Coupon> AllCoupons = coupDB.getAllCoupons();
 			List<Coupon> trash = new ArrayList<Coupon>();
 			for (Coupon coup : AllCoupons) {
-					// check the date - look for expired coupons
 					if (coup.getEndDate().before(today)) {
-						// remove the coupon from customers list
 						removeFromCustomer(coup);
-						// remove the coupon from companies list
 						removeFromCompany(coup);
-						// delete coupon
 						trash.add(coup);
 					}
 				}
@@ -61,7 +46,8 @@ public class CouponExpirationDailyJob implements Runnable {
 					AllCoupons.remove(coup);
 					coupDB.deleteCoupon(coup.getCouponID());
 				}
-				// to the next time
+				
+				// next scan
 				System.out.println("Successfully launched CouponExpirationDailyJob");
 				TimeUnit.HOURS.sleep(24);
  			} catch (InterruptedException e) {
@@ -88,7 +74,6 @@ public class CouponExpirationDailyJob implements Runnable {
 		}
 	}
 
-	// Stop
 	public void stop() {
 		quit = true;
 	}

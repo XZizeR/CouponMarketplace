@@ -31,11 +31,10 @@ import lombok.Setter;
 @Scope("prototype")
 @Entity
 @Table(name = "Coupons", uniqueConstraints = { @UniqueConstraint(columnNames = "title", name = "uniqueConstraint") })
-@NoArgsConstructor // constructor - for hibernate
-@AllArgsConstructor // constructor - to show
+@NoArgsConstructor // for Hibernate
+@AllArgsConstructor 
 @Getter
 @Setter
-//@ToString
 public class Coupon {
 
 	@Id
@@ -78,13 +77,13 @@ public class Coupon {
 	@Column(name = "Price")
 	private double price;
 
-	// to purchase
+//	TO PURCHASE
 	public Coupon(long couponID) {
 		super();
 		this.couponID = couponID;
 	}
 
-	// to create
+//	TO CREATE
 	public Coupon(Company companyID, @NotNull @Min(0) long amount, Category category,
 			@NotBlank(message = "Name may not be blank") String title,
 			@NotBlank(message = "Name may not be blank") String description,

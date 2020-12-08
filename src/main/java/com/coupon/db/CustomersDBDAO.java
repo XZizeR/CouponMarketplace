@@ -15,28 +15,28 @@ public class CustomersDBDAO {
 	@Autowired
 	private CustomersRepository repo;
 	
-	// Customer exists
+//	EXIST - CUSTOMER
 	public Customer isCustomerExist(String email, String password) {
 		return repo.findCustomerByEmailAndPassword(email, password);
 	}
 	
-	// Add a Customer
+//	CREATE CUSTOMER
 	public void addCustomer(Customer customer) {
 		repo.save(customer);
 	}
 	
-	// Update a Customer
+//	UPDATE CUSTOMER
 	public void updateCustomer(Customer customer) {
 		if(repo.existsById(customer.getCustomerID()))
 			repo.save(customer);
 	}
 	
-	// Delete a Customer
+//	DELETE CUSTOMER
 	public void deleteCustomser(long customerId) {
 		repo.deleteById(customerId);
 	}
 	
-	// Show a Customer
+//	GET-ONE CUSTOMER
 	public Customer getOneCustomer(long customerId) {
 		Optional<Customer> opt = repo.findById(customerId);
 		if(opt.isPresent())
@@ -45,7 +45,7 @@ public class CustomersDBDAO {
 			return null;
 	}
 	
-	// Show all Customers
+//	GET-ALL CUSOTMERS
 	public List<Customer> getAllCustomers(){
 		return repo.findAll();
 	}

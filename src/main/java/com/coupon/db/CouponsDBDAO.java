@@ -17,23 +17,23 @@ public class CouponsDBDAO {
 	
 	public CouponsDBDAO() {};
 	
-	// Add one Coupon
+//	CREATE COUPON
 	public void addCoupon(Coupon coupon) {
 		repo.save(coupon);
 	}
 	
-	// Update one coupon
+//	UPDATE COUPON
 	public void updateCoupon(Coupon coupon) {
 		if(repo.existsById(coupon.getCouponID()))
 			repo.save(coupon);
 	}
 	
-	// Delete one coupon
+//	DELETE COUPON
 	public void deleteCoupon(long couponId) {
 		repo.deleteById(couponId);
 	}
 	
-	// Show one coupon
+//	GET-ONE COUPON
 	public Coupon getOneCoupon(long couponId) {
 		Optional<Coupon>opt = repo.findById(couponId);
 		if(opt.isPresent())
@@ -42,7 +42,7 @@ public class CouponsDBDAO {
 			return null;
 	}
 	
-	// Show all coupons
+//	GET-ALL COUPONS
 	public List<Coupon>getAllCoupons(){
 		return repo.findAll();
 	}
