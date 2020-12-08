@@ -5,7 +5,7 @@ The data stored and managed within MySQL, SQL data mapped by JPA (Java Persisten
 
 ## How to run it
 To run this applicatin you have to download it, import it to your IDE, and run it.
-The project is using Lombok, so there is a need to install Lombok(https://projectlombok.org) if you have not.
+The project is using Lombok, so there is a need to install Lombok (https://projectlombok.org), if you have not.
 ### Client-side:
 to add your new angular front-end project
 - Run `ng build --prod` on your CLI, go to `/dist` directory and copy all the files.
